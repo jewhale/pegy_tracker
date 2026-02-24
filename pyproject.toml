@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pegy-tracker"
+version = "0.1.0"
+description = "Track PEG/PEGY-style valuation metrics using pluggable market data providers (starting with Alpha Vantage) and persist snapshots."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+  { name = "Your Name" }
+]
+keywords = ["finance", "stocks", "valuation", "pegy", "alphavantage"]
+dependencies = [
+  "requests>=2.32.0",
+  "python-dotenv>=1.0.1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.2.0",
+  "pytest-cov>=5.0.0",
+  "ruff>=0.5.0",
+  "mypy>=1.10.0",
+  "types-requests>=2.32.0.20240712",
+]
+
+[project.scripts]
+pegy = "pegy_tracker.cli.main:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["pegy_tracker*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = [
+  "E501", # let line-length be handled pragmatically
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["pegy_tracker"]
+
+[tool.mypy]
+python_version = "3.11"
+mypy_path = ["src"]
+packages = ["pegy_tracker"]
+strict = true
+warn_unreachable = true
+warn_no_return = true
+no_implicit_optional = true
+disallow_any_generics = true
